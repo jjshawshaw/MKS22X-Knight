@@ -26,7 +26,7 @@ public class KnightBoard{
     for (int y = 0; y < board.length; y ++){
       for (int x = 0; x < board[0].length; x++){
         if (board[y][x] == 0) out += "__ ";
-        else if (board[y][x] < 10) out += board[y][x] + "_ ";
+        else if (board[y][x] < 10) out += "_" + board[y][x] + " ";
         else out += board[y][x] + " ";
       }
       out += "\n";
@@ -40,7 +40,49 @@ public class KnightBoard{
  or out of bounds.
 @returns true when the board is solvable from the specified starting position*/
 
-//public boolean solve(int startingRow, int startingCol)
+public boolean solve(int startingRow, int startingCol){
+  return solveH(startingRow, startingCol, 1);
+}
+
+
+// level is the # of the knight
+
+private boolean addKnight(int row, int col, int level){
+  if (row < 0 || col < 0 || row >= board.length || col  >= board[0].length) return false;
+  else board[row][col] = level;
+  return true;
+}
+
+private boolean solveH(int row ,int col, int level){
+  if (level == (row * col)) return true;
+
+  else {
+    addKnight(row, col, level);
+    int[] moves = new int[]{
+      2, 1,
+      2, -1,
+      -2, 1,
+      -2, -1,
+      1, 2,
+      1, -2,
+      -1, 2,
+      -1, -2
+    };
+     boolean nextMove = false;
+     for (int i = 0; i < moves.length; i += 2){
+       nextMove = nextMove || addKnight(row + moves[i], col + moves[i + 1], level + 1);
+       System.out.println(toString());
+     }
+     if (!nextMove){
+       board[row][col] = 0;
+     }
+     else{
+       return true;
+     }
+    return false;
+  }
+}
+
 
 
 
@@ -51,9 +93,7 @@ public class KnightBoard{
 
 //public int countSolutions(int startingRow, int startingCol)
 
-// level is the # of the knight
 
-//private boolean solveH(int row ,int col, int level)
 
 
 
