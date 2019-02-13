@@ -21,7 +21,18 @@ public class KnightBoard{
     you get a blank board if you never called solve or
     when there is no solution */
 
-//  public String toString()
+  public String toString(){
+    String out = "";
+    for (int y = 0; y < board.length; y ++){
+      for (int x = 0; x < board[0].length; x++){
+        if (board[y][x] == 0) out += "__ ";
+        else if (board[y][x] < 10) out += board[y][x] + "_ ";
+        else out += board[y][x] + " ";
+      }
+      out += "\n";
+  }
+  return out;
+}
 
 /*Modifies the board by labeling the moves from 1 (at startingRow,startingCol) up to the area of the board in proper knight move steps.
 @throws IllegalStateException when the board contains non-zero values.
