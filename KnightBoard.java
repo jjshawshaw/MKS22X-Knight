@@ -48,16 +48,15 @@ public boolean solve(int startingRow, int startingCol){
 // level is the # of the knight
 
 private boolean addKnight(int row, int col, int level){
-  if (row < 0 || col < 0 || row >= board.length || col  >= board[0].length) return false;
+  if (row < 0 || col < 0 || row >= board.length || col  >= board[0].length || board[row][col] != 0) return false;
   else board[row][col] = level;
   return true;
 }
 
 private boolean solveH(int row ,int col, int level){
-  if (level == (row * col)) return true;
-
-  else {
-      addKnight(row, col, level);
+  if (level > ((board.length) * board[0].length)) return true;
+  //System.out.println(toString());
+  if (addKnight(row, col, level)){
       int[] moves = new int[]{
         2, 1,
         2, -1,
@@ -70,9 +69,7 @@ private boolean solveH(int row ,int col, int level){
     };
      boolean nextMove = false;
      for (int i = 0; i < moves.length; i += 2){
-       System.out.println(moves[i] + " " + moves[i + 1]);
-       nextMove = addKnight(row + moves[i], col + moves[i + 1], level + 1) || nextMove;
-       System.out.println(toString());
+       nextMove = solveH(row + moves[i], col + moves[i + 1], level + 1) || nextMove;
      }
      if (!nextMove){
        board[row][col] = 0;
@@ -82,6 +79,7 @@ private boolean solveH(int row ,int col, int level){
        return true;
      }
   }
+  return false;
 }
 
 
