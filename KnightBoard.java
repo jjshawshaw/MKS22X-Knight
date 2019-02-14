@@ -57,29 +57,30 @@ private boolean solveH(int row ,int col, int level){
   if (level == (row * col)) return true;
 
   else {
-    addKnight(row, col, level);
-    int[] moves = new int[]{
-      2, 1,
-      2, -1,
-      -2, 1,
-      -2, -1,
-      1, 2,
-      1, -2,
-      -1, 2,
-      -1, -2
+      addKnight(row, col, level);
+      int[] moves = new int[]{
+        2, 1,
+        2, -1,
+        -2, 1,
+        -2, -1,
+        1, 2,
+        1, -2,
+        -1, 2,
+        -1, -2
     };
      boolean nextMove = false;
      for (int i = 0; i < moves.length; i += 2){
-       nextMove = nextMove || addKnight(row + moves[i], col + moves[i + 1], level + 1);
+       System.out.println(moves[i] + " " + moves[i + 1]);
+       nextMove = addKnight(row + moves[i], col + moves[i + 1], level + 1) || nextMove;
        System.out.println(toString());
      }
      if (!nextMove){
        board[row][col] = 0;
+       return false;
      }
      else{
        return true;
      }
-    return false;
   }
 }
 
