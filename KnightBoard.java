@@ -90,7 +90,38 @@ private boolean solveH(int row ,int col, int level){
  or out of bounds.
 @returns the number of solutions from the starting position specified*/
 
-//public int countSolutions(int startingRow, int startingCol)
+public int countSolutions(int startingRow, int startingCol){
+  return countH(startingRow, startingCol, 1, 0);
+}
+
+public int countH(int row, int col, int level, int sum){
+  if (level > ((board.length) * board[0].length)) return 1;
+  //System.out.println(toString());
+  if (addKnight(row, col, level)){
+      int[] moves = new int[]{
+        2, 1,
+        2, -1,
+        -2, 1,
+        -2, -1,
+        1, 2,
+        1, -2,
+        -1, 2,
+        -1, -2
+    };
+     boolean nextMove = false;
+     for (int i = 0; i < moves.length; i += 2){
+       sum += countH(row + moves[i], col + moves[i + 1], level + 1, 0);
+     }
+     if (true) {
+       board[row][col] = 0;
+       return sum;
+     }
+     else{
+       return sum;
+     }
+  }
+  return 0;
+}
 
 
 
