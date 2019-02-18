@@ -1,6 +1,6 @@
 public class Driver{
   public static void main(String[]args){
-    KnightBoard k = new KnightBoard(6, 6);
+    KnightBoard k = new KnightBoard(4, 5);
     System.out.println(k);
     /*int i = 0;
     for (int y = 0; y < 5; y ++){
@@ -11,6 +11,9 @@ public class Driver{
       }
     }
     System.out.println(i);*/
+    System.out.println(k.numMovesString());
+    //System.out.println(k.countSolutions(0, 2));
+    k.solve(0, 2);
     System.out.println(k);
   }
 }

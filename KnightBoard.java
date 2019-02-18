@@ -10,7 +10,6 @@ public class KnightBoard{
       clear();
       numMoves = new int[startingRows][startingCols];
       numMoves();
-      System.out.println(numMovesString());
   }
 
   public void clear(){
@@ -77,6 +76,52 @@ public String numMovesString(){
 return out;
 }
 
+private boolean addKnight(int row, int col, int level){
+  if (row < 0 || col < 0 || row >= board.length || col  >= board[0].length || board[row][col] != 0) return false;
+  else board[row][col] = level;
+  int[] moves = new int[]{
+    2, 1,
+    2, -1,
+    -2, 1,
+    -2, -1,
+    1, 2,
+    1, -2,
+    -1, 2,
+    -1, -2
+};
+for (int i = 0; i < moves.length; i += 2){
+  if (row + moves[i] >= 0 &&
+      col + moves[i + 1] >= 0 &&
+      row + moves[i] < board.length &&
+      col + moves[i + 1]  < board[0].length){
+        numMoves[row + moves[i]][col + moves[i + 1]] -= 1;
+  }
+}
+  return true;
+}
+
+private void removeKnight(int row, int col){
+  board[row][col] = 0;
+  int[] moves = new int[]{
+    2, 1,
+    2, -1,
+    -2, 1,
+    -2, -1,
+    1, 2,
+    1, -2,
+    -1, 2,
+    -1, -2
+  };
+  for (int i = 0; i < moves.length; i += 2){
+    if (row + moves[i] >= 0 &&
+        col + moves[i + 1] >= 0 &&
+        row + moves[i] < board.length &&
+        col + moves[i + 1]  < board[0].length){
+          numMoves[row + moves[i]][col + moves[i + 1]] += 1;
+    }
+  }
+}
+
 /*Modifies the board by labeling the moves from 1 (at startingRow,startingCol) up to the area of the board in proper knight move steps.
 @throws IllegalStateException when the board contains non-zero values.
 @throws IllegalArgumentException when either parameter is negative
@@ -90,14 +135,13 @@ public boolean solve(int startingRow, int startingCol){
 
 // level is the # of the knight
 
-private boolean addKnight(int row, int col, int level){
-  if (row < 0 || col < 0 || row >= board.length || col  >= board[0].length || board[row][col] != 0) return false;
-  else board[row][col] = level;
-  return true;
-}
+
 
 private boolean solveH(int row ,int col, int level){
-  if (level > ((board.length) * board[0].length)) return true;
+  if (level > ((board.length) * board[0].length)) {
+    System.out.println(numMovesString());
+    return true;
+  }
   //System.out.println(toString());
   if (addKnight(row, col, level)){
       int[] moves = new int[]{
@@ -115,7 +159,7 @@ private boolean solveH(int row ,int col, int level){
        nextMove = solveH(row + moves[i], col + moves[i + 1], level + 1) || nextMove;
      }
      if (!nextMove){
-       board[row][col] = 0;
+       removeKnight(row, col);
        return false;
      }
      else{
@@ -150,14 +194,17 @@ public int countH(int row, int col, int level, int sum){
         -1, -2
     };
      if (level + 1 > ((board.length) * board[0].length)){
-       board[row][col] = 0;
+       removeKnight(row, col);
+       System.out.println(numMovesString());
         return 1;
       }
      for (int i = 0; i < moves.length; i += 2){
        sum += countH(row + moves[i], col + moves[i + 1], level + 1, 0);
+
      }
-       board[row][col] = 0;
+       removeKnight(row, col);
        return sum;
+
   }
   return 0;
 }
