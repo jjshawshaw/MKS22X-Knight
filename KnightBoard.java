@@ -1,5 +1,6 @@
 public class KnightBoard{
   private int[][] board;
+  private int[][] numMoves;
 
 
   //@throws IllegalArgumentException when either parameter is <= 0.
@@ -7,12 +8,42 @@ public class KnightBoard{
       if (startingRows <= 0 || startingCols <= 0) throw new IllegalArgumentException();
       board = new int[startingRows][startingCols];
       clear();
+      numMoves = new int[startingRows][startingCols];
+      numMoves();
+      System.out.println(numMovesString());
   }
 
   public void clear(){
     for (int y = 0; y < board.length; y ++){
       for (int x = 0; x < board[0].length; x++){
         board[y][x] = 0;
+      }
+    }
+  }
+
+  private void numMoves(){
+    int[] moves = new int[]{
+      2, 1,
+      2, -1,
+      -2, 1,
+      -2, -1,
+      1, 2,
+      1, -2,
+      -1, 2,
+      -1, -2
+  };
+    for (int y = 0; y < board.length; y ++){
+      for (int x = 0; x < board[0].length; x++){
+        int tileMoves = 0;
+        for (int i = 0; i < moves.length; i += 2){
+          if (y + moves[i] >= 0 &&
+              x + moves[i + 1] >= 0 &&
+                y + moves[i] < board.length &&
+                x + moves[i + 1]  < board[0].length){
+            tileMoves += 1;
+          }
+        }
+        numMoves[y][x] = tileMoves;
       }
     }
   }
@@ -32,6 +63,18 @@ public class KnightBoard{
       out += "\n";
   }
   return out;
+}
+
+public String numMovesString(){
+  String out = "";
+  for (int y = 0; y < board.length; y ++){
+    for (int x = 0; x < board[0].length; x++){
+      if (numMoves[y][x] < 10) out += " " + numMoves[y][x] + " ";
+      else out += numMoves[y][x] + " ";
+    }
+    out += "\n";
+}
+return out;
 }
 
 /*Modifies the board by labeling the moves from 1 (at startingRow,startingCol) up to the area of the board in proper knight move steps.
@@ -106,7 +149,6 @@ public int countH(int row, int col, int level, int sum){
         -1, 2,
         -1, -2
     };
-     boolean nextMove = false;
      if (level + 1 > ((board.length) * board[0].length)){
        board[row][col] = 0;
         return 1;
