@@ -21,6 +21,10 @@ public class Tile implements Comparable<Tile>{
     numMoves += n;
   }
 
+  public String toString(){
+    return "" + numMoves;
+  }
+
   public int compareTo(Tile T){
     return numMoves - T.numMoves();
   }

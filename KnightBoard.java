@@ -1,3 +1,5 @@
+import java.util.*;
+
 public class KnightBoard{
   private int[][] board;
   private Tile[][] numMoves;
@@ -47,6 +49,11 @@ public class KnightBoard{
     }
   }
 
+  private Tile getTile(int row, int col){
+    if (row < 0 || col < 0 || row >= board.length || col  >= board[0].length || board[row][col] != 0) return null;
+    return numMoves[row][col];
+  }
+
     /*blank boards display 0's as underscores
     you get a blank board if you never called solve or
     when there is no solution */
@@ -68,8 +75,8 @@ public String numMovesString(){
   String out = "";
   for (int y = 0; y < board.length; y ++){
     for (int x = 0; x < board[0].length; x++){
-      if (numMoves[y][x].numMoves() < 10) out += " " + numMoves[y][x].numMoves() + " ";
-      else out += numMoves[y][x].numMoves() + " ";
+      if (numMoves[y][x].numMoves() < 10) out += " " + numMoves[y][x] + " ";
+      else out += numMoves[y][x] + " ";
     }
     out += "\n";
 }
@@ -134,29 +141,37 @@ public boolean solve(int startingRow, int startingCol){
 
 
 // level is the # of the knight
-
+public ArrayList<Tile> getMoves(int row, int col){
+  ArrayList<Tile> moveTiles = new ArrayList<Tile>();
+  int[] moves = new int[]{
+    2, 1,
+    2, -1,
+    -2, 1,
+    -2, -1,
+    1, 2,
+    1, -2,
+    -1, 2,
+    -1, -2
+};
+for (int i = 0; i < moves.length; i += 2){
+  Tile T = getTile(row + moves[i], col + moves[i + 1]);
+  if (T != null) moveTiles.add(T);
+}
+Collections.sort(moveTiles);
+return moveTiles;
+}
 
 
 private boolean solveH(int row ,int col, int level){
   if (level > ((board.length) * board[0].length)) {
-    System.out.println(numMovesString());
     return true;
   }
-  //System.out.println(toString());
   if (addKnight(row, col, level)){
-      int[] moves = new int[]{
-        2, 1,
-        2, -1,
-        -2, 1,
-        -2, -1,
-        1, 2,
-        1, -2,
-        -1, 2,
-        -1, -2
-    };
+
+    List<Tile> moveTiles = getMoves(row, col);
      boolean nextMove = false;
-     for (int i = 0; i < moves.length; i += 2){
-       nextMove = solveH(row + moves[i], col + moves[i + 1], level + 1) || nextMove;
+     for (int i = 0; i < moveTiles.size(); i++){
+       nextMove = solveH(moveTiles.get(i).getRow(), moveTiles.get(i).getCol(), level + 1) || nextMove;
      }
      if (!nextMove){
        removeKnight(row, col);
@@ -194,7 +209,6 @@ public int countH(int row, int col, int level, int sum){
         -1, -2
     };
      if (level + 1 > ((board.length) * board[0].length)){
-      System.out.println(numMovesString());
        removeKnight(row, col);
         return 1;
       }
