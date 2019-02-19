@@ -197,22 +197,14 @@ public int countSolutions(int startingRow, int startingCol){
 
 public int countH(int row, int col, int level, int sum){
   if (addKnight(row, col, level)){
-      int[] moves = new int[]{
-        2, 1,
-        2, -1,
-        -2, 1,
-        -2, -1,
-        1, 2,
-        1, -2,
-        -1, 2,
-        -1, -2
-    };
-     if (level + 1 > ((board.length) * board[0].length)){
+
+     if (level == ((board.length) * board[0].length)){
        removeKnight(row, col);
         return 1;
       }
-     for (int i = 0; i < moves.length; i += 2){
-       sum += countH(row + moves[i], col + moves[i + 1], level + 1, 0);
+      List<Tile> moveTiles = getMoves(row, col);
+     for (int i = 0; i < moveTiles.size(); i++){
+       sum += countH(moveTiles.get(i).getRow(), moveTiles.get(i).getCol(), level + 1, 0);
 
      }
        removeKnight(row, col);
