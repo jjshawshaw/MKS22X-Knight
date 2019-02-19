@@ -12,8 +12,8 @@ public class Driver{
     }
     System.out.println(i);*/
     System.out.println(k.numMovesString());
-    //System.out.println(k.countSolutions(0, 2));
-    k.solve(0, 2);
+    System.out.println(k.countSolutions(0, 2));
+    //k.solve(0, 2);
     System.out.println(k);
   }
 }

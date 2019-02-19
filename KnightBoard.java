@@ -1,6 +1,6 @@
 public class KnightBoard{
   private int[][] board;
-  private int[][] numMoves;
+  private Tile[][] numMoves;
 
 
   //@throws IllegalArgumentException when either parameter is <= 0.
@@ -8,7 +8,7 @@ public class KnightBoard{
       if (startingRows <= 0 || startingCols <= 0) throw new IllegalArgumentException();
       board = new int[startingRows][startingCols];
       clear();
-      numMoves = new int[startingRows][startingCols];
+      numMoves = new Tile[startingRows][startingCols];
       numMoves();
   }
 
@@ -42,7 +42,7 @@ public class KnightBoard{
             tileMoves += 1;
           }
         }
-        numMoves[y][x] = tileMoves;
+        numMoves[y][x] = new Tile(y, x, tileMoves);
       }
     }
   }
@@ -68,8 +68,8 @@ public String numMovesString(){
   String out = "";
   for (int y = 0; y < board.length; y ++){
     for (int x = 0; x < board[0].length; x++){
-      if (numMoves[y][x] < 10) out += " " + numMoves[y][x] + " ";
-      else out += numMoves[y][x] + " ";
+      if (numMoves[y][x].numMoves() < 10) out += " " + numMoves[y][x].numMoves() + " ";
+      else out += numMoves[y][x].numMoves() + " ";
     }
     out += "\n";
 }
@@ -94,7 +94,7 @@ for (int i = 0; i < moves.length; i += 2){
       col + moves[i + 1] >= 0 &&
       row + moves[i] < board.length &&
       col + moves[i + 1]  < board[0].length){
-        numMoves[row + moves[i]][col + moves[i + 1]] -= 1;
+        numMoves[row + moves[i]][col + moves[i + 1]].changeMoves(-1);
   }
 }
   return true;
@@ -117,7 +117,7 @@ private void removeKnight(int row, int col){
         col + moves[i + 1] >= 0 &&
         row + moves[i] < board.length &&
         col + moves[i + 1]  < board[0].length){
-          numMoves[row + moves[i]][col + moves[i + 1]] += 1;
+          numMoves[row + moves[i]][col + moves[i + 1]].changeMoves(1);
     }
   }
 }
@@ -194,8 +194,8 @@ public int countH(int row, int col, int level, int sum){
         -1, -2
     };
      if (level + 1 > ((board.length) * board[0].length)){
+      System.out.println(numMovesString());
        removeKnight(row, col);
-       System.out.println(numMovesString());
         return 1;
       }
      for (int i = 0; i < moves.length; i += 2){
