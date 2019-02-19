@@ -163,11 +163,10 @@ return moveTiles;
 
 
 private boolean solveH(int row ,int col, int level){
-  if (level > ((board.length) * board[0].length)) {
-    return true;
-  }
   if (addKnight(row, col, level)){
-
+    if (level  == ((board.length) * board[0].length)){
+      return true;
+    }
     List<Tile> moveTiles = getMoves(row, col);
      boolean nextMove = false;
      for (int i = 0; i < moveTiles.size(); i++){
