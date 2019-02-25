@@ -12,7 +12,6 @@ public static void runTest(int i){
     try{
       int correct = answers[i];
       b = new KnightBoard(m[i%m.length],n[i%m.length]);
-
       int ans  = b.countSolutions(startx[i],starty[i]);
 
       if(correct==ans){

@@ -136,6 +136,17 @@ private void removeKnight(int row, int col){
 @returns true when the board is solvable from the specified starting position*/
 
 public boolean solve(int startingRow, int startingCol){
+  for (int y = 0; y < board.length; y ++){
+    for (int x = 0; x < board[0].length; x++){
+      if (board[y][x] != 0) throw new IllegalStateException();
+    }
+  }
+  if (startingRow < 0 ||
+      startingCol < 0 ||
+      startingRow >= board.length ||
+      startingCol >= board[0].length){
+        throw new IllegalArgumentException();
+      }
   return solveH(startingRow, startingCol, 1);
 }
 
@@ -192,7 +203,17 @@ private boolean solveH(int row ,int col, int level){
 @returns the number of solutions from the starting position specified*/
 
 public int countSolutions(int startingRow, int startingCol){
-  
+  for (int y = 0; y < board.length; y ++){
+    for (int x = 0; x < board[0].length; x++){
+      if (board[y][x] != 0) throw new IllegalStateException();
+    }
+  }
+  if (startingRow < 0 ||
+      startingCol < 0 ||
+      startingRow >= board.length ||
+      startingCol >= board[0].length){
+        throw new IllegalArgumentException();
+      }
   return countH(startingRow, startingCol, 1, 0);
 }
 
