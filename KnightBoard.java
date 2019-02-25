@@ -192,16 +192,16 @@ private boolean solveH(int row ,int col, int level){
 @returns the number of solutions from the starting position specified*/
 
 public int countSolutions(int startingRow, int startingCol){
+  
   return countH(startingRow, startingCol, 1, 0);
 }
 
 public int countH(int row, int col, int level, int sum){
+  if (level == ((board.length) * board[0].length) ){
+    removeKnight(row, col);
+     return 1;
+   }
   if (addKnight(row, col, level)){
-
-     if (level == ((board.length) * board[0].length)){
-       removeKnight(row, col);
-        return 1;
-      }
       List<Tile> moveTiles = getMoves(row, col);
      for (int i = 0; i < moveTiles.size(); i++){
        sum += countH(moveTiles.get(i).getRow(), moveTiles.get(i).getCol(), level + 1, 0);
